@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!--
+   New Perspectives on XML
+   Tutorial 4
+   Case Problem 1
+
+   Cleo Coal sites vocabulary schema
+   Author:    Joshua Carpentier
+   Date:      3/8/19
+
+   Filename:         sites.xsd
+   Supporting Files:
+
+
+	5.In the sites.xsd file, in the root element, specify the target namespace as http://example.com/
+		weekendfunsnacks/sites, and then associate the prefix cc with the target namespace. Associate
+		the prefix sm with the namespace http://www.sitemaps.org/schemas/sitemap/0.9.
+		??????????????????????????????????
+
+		what prefix to use and there are no attributes
+
+		Specify that
+		elements are qualified by default, and that attributes are unqualified by default.
+	    ????????????????????????????????????????????
+
+
+
+		 7.	 Immediately following the declaration of the totalPages element, add a reference to the
+		urlset element from the
+				 http://www.sitemaps.org/schemas/sitemap/0.9 namespace.
+		Save your work.
+
+
+
+
+I could make your sample work (Here it is assumed that sites.xsd is in the same directory.) by changing the top of you XML file to
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+  <sites xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xs:schemaLocation="file://sites.xsd" xmlns ="http://example.com/weekendfunsnacks/sites">
+
+Here, xs:schemaLocation specifies the path to the XSD and xmlns: sets the default namespace. In the XSD I removed the (wrong) namespaces sm: and cc: from the attributes of xs:schema.
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+targetNamespace="http://example.com/weekendfunsnacks/sites" xmlns ="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+See here for an explanation of these attributes. So, applied to your sample, the targetNamespace="http://example.com/weekendfunsnacks/sites" specifies that the elements defined by this schema come from the same namespace as the elements in your XML.
+
+Applying these fixes, the XML validates.
+
+
+
+
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+cc:targetNamespace="http://example.com/weekendfunsnacks/sites"
+sm:xmlns ="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<xs:import namespace="http://www.sitemaps.org/schemas/sitemap/0.9"
+ schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" />
+
+   <xs:element name="sites">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="site" maxOccurs="unbounded" minOccurs="0">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element type="xs:string" name="name"/>
+                     <xs:element type="xs:byte" name="totalPages" ref="sitemap"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>
